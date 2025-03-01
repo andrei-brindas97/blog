@@ -2,7 +2,7 @@ name: Generate and Post Blog
 
 on:
   schedule:
-    - cron: "0 8,12,18 * * *"  # Runs at 08:00, 12:00, 18:00 UTC daily
+    - cron: "0 8,12,18 * * *"  # Runs at 08:00, 12:00, and 18:00 UTC daily
   workflow_dispatch:  # Allows manual runs
 
 jobs:
@@ -17,14 +17,21 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install Dependencies
+      - name: Clean up and Set Up Virtual Environment
         run: |
+          rm -rf venv
+          python -m venv venv
+          source venv/bin/activate
           python -m pip install --upgrade pip
           pip install openai pyyaml
-  
+
+      - name: Ensure Script is Executable
+        run: chmod +x generate_blog.py
 
       - name: Generate Blog Posts
-        run: python generate_blog.py
+        run: |
+          source venv/bin/activate
+          python generate_blog.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
@@ -33,5 +40,5 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add .
-          git commit -m "Automated blog post for $(date)"
-          git push
+          git commit -m "Automated blog post for $(date)" || echo "No changes to commit"
+          git push || echo "No changes to push"
