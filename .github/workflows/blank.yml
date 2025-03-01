@@ -1,0 +1,34 @@
+name: Generate and Post Blog
+
+on:
+  schedule:
+    - cron: "0 8,12,18 * * *"  # Runs at 08:00, 12:00, 18:00 UTC daily
+  workflow_dispatch:  # Allows manual runs
+
+jobs:
+  generate_post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: pip install openai pyyaml
+
+      - name: Generate Blog Posts
+        run: python generate_blog.py
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "Automated blog post for $(date)"
+          git push
