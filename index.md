@@ -1,12 +1,14 @@
 ---
-layout: home
+layout: default
 title: Home
 ---
 
-Welcome to my blog! Here you'll find my latest posts about DevOps.
+# Welcome to my blog
 
-## Recent Posts
-
-{% for post in site.posts limit:5 %}
-* [{{ post.title }}]({{ post.url }}) - {{ post.date | date: "%B %d, %Y" }}
+{% for post in site.posts %}
+  <article>
+    <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+    <time datetime="{{ post.date | date: "%Y-%m-%d" }}">{{ post.date | date_to_long_string }}</time>
+    {{ post.excerpt }}
+  </article>
 {% endfor %} 
