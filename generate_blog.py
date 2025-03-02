@@ -1,6 +1,15 @@
 import os
 import openai
 import datetime
+import logging
+
+# Configure logging
+LOG_FILE = "blog_generator.log"
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 # Configuration
 TOPIC = "DevOps"
@@ -8,28 +17,55 @@ POSTS_PER_DAY = 3
 OUTPUT_DIR = "posts"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Set OpenAI API Key
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Set this in GitHub Secrets
+# Initialize OpenAI client
+API_KEY = os.getenv("OPENAI_API_KEY")
 
-# Function to generate a blog post
+if not API_KEY:
+    logging.error("OPENAI_API_KEY is not set. Make sure it's configured in GitHub Secrets.")
+    raise ValueError("OPENAI_API_KEY is missing.")
+
+client = openai.OpenAI(api_key=API_KEY)
+
 def generate_post():
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": f"You are a tech blogger writing about {TOPIC}."},
-            {"role": "user", "content": f"Write an insightful blog post on {TOPIC}."}
-        ]
-    )
-    
-    return response["choices"][0]["message"]["content"]
+    """Generates a blog post using OpenAI API."""
+    try:
+        logging.info(f"Generating a blog post on {TOPIC}...")
 
-# Generate posts
+        response = client.chat.completions.create(
+            model="gpt-40",
+            messages=[
+                {"role": "system", "content": f"You are a tech blogger writing about {TOPIC}."},
+                {"role": "user", "content": f"Write an insightful blog post on {TOPIC}."}
+            ],
+            max_tokens=800
+        )
+        
+        post_content = response.choices[0].message.content.strip()
+        logging.info("Blog post generated successfully.")
+        return post_content
+
+    except openai.APIError as e:
+        logging.error(f"OpenAI API error: {e}")
+        return None
+    except Exception as e:
+        logging.error(f"Unexpected error while generating post: {e}")
+        return None
+
+# Generate multiple posts
 for i in range(POSTS_PER_DAY):
-    post_content = generate_post()
-    date_str = datetime.datetime.now().strftime("%Y-%m-%d")
-    filename = f"{OUTPUT_DIR}/{date_str}-post-{i+1}.md"
+    logging.info(f"Starting generation of post {i+1}/{POSTS_PER_DAY}...")
     
-    with open(filename, "w") as file:
-        file.write(f"# {TOPIC} - {date_str}\n\n{post_content}")
+    post_content = generate_post()
+    if post_content:
+        date_str = datetime.datetime.now().strftime("%Y-%m-%d")
+        filename = f"{OUTPUT_DIR}/{date_str}-post-{i+1}.md"
 
-print(f"Generated {POSTS_PER_DAY} posts for {TOPIC}.")
+        try:
+            with open(filename, "w", encoding="utf-8") as file:
+                file.write(f"# {TOPIC} - {date_str}\n\n{post_content}")
+            logging.info(f"Post {i+1} saved to {filename}.")
+        
+        except IOError as e:
+            logging.error(f"Error saving post {i+1}: {e}")
+
+print(f"Generated {POSTS_PER_DAY} posts for {TOPIC}. Check {LOG_FILE} for details.")
