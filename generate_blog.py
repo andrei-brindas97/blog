@@ -32,7 +32,7 @@ def generate_post():
         logging.info(f"Generating a blog post on {TOPIC}...")
 
         response = client.chat.completions.create(
-            model="gpt-40",
+            model="gpt-4.5-preview",
             messages=[
                 {"role": "system", "content": f"You are a tech blogger writing about {TOPIC}."},
                 {"role": "user", "content": f"Write an insightful blog post on {TOPIC}."}
