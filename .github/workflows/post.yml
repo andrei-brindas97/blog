@@ -16,12 +16,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
+          cache: 'pip'  # Enable pip caching
 
-      - name: Clean up and Set Up Virtual Environment
+      - name: Install Dependencies
         run: |
-          rm -rf venv
-          python -m venv venv
-          source venv/bin/activate
           python -m pip install --upgrade pip
           pip install openai pyyaml
 
@@ -29,9 +27,7 @@ jobs:
         run: chmod +x generate_blog.py
 
       - name: Generate Blog Posts
-        run: |
-          source venv/bin/activate
-          python generate_blog.py
+        run: python generate_blog.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
