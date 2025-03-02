@@ -1,9 +1,9 @@
 ---
-layout: default
+layout: home
 title: Home
 ---
 
-# Welcome to my blog
+Welcome to my DevOps blog! Here you'll find articles about DevOps practices, tools, and culture.
 
 {% for post in site.posts %}
   <article>

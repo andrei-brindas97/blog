@@ -14,7 +14,7 @@ logging.basicConfig(
 # Configuration
 TOPIC = "DevOps"
 POSTS_PER_DAY = 3
-OUTPUT_DIR = "posts"
+OUTPUT_DIR = "_posts"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Initialize OpenAI client
@@ -61,8 +61,21 @@ for i in range(POSTS_PER_DAY):
         filename = f"{OUTPUT_DIR}/{date_str}-post-{i+1}.md"
 
         try:
+            # Add front matter to the post
+            front_matter = f"""---
+layout: post
+title: "{TOPIC} - Post {i+1}"
+date: {date_str}
+categories: 
+  - {TOPIC}
+tags:
+  - DevOps
+  - Technology
+---
+
+"""
             with open(filename, "w", encoding="utf-8") as file:
-                file.write(f"# {TOPIC} - {date_str}\n\n{post_content}")
+                file.write(front_matter + post_content)
             logging.info(f"Post {i+1} saved to {filename}.")
         
         except IOError as e:

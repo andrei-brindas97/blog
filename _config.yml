@@ -15,7 +15,7 @@ plugins:
 
 # Directory settings
 layouts_dir: _layouts
-posts_dir: posts
+# posts_dir: posts
 
 exclude:
   - venv/
@@ -36,4 +36,9 @@ keep_files:
   - .git
   - .gitignore
 
-safe: true 
+safe: true
+
+# Add these settings
+permalink: /:year/:month/:day/:title/
+paginate: 5
+paginate_path: "/page:num/" 
