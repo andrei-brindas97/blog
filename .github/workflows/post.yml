@@ -18,29 +18,35 @@ jobs:
           python-version: "3.10"
           cache: 'pip'  # Enable pip caching
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0'
-          bundler-cache: true
-
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install openai pyyaml
-
-      - name: Install Jekyll Dependencies
-        run: |
-          gem install bundler
-          bundle install
 
       - name: Generate Blog Posts
         run: python generate_blog.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
-      - name: Build Jekyll Site
-        run: bundle exec jekyll build
+      - name: Setup Ruby and Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      - name: Create Jekyll Environment
+        run: |
+          rm -rf Gemfile Gemfile.lock
+          echo "source 'https://rubygems.org'" > Gemfile
+          echo "gem 'github-pages', group: :jekyll_plugins" >> Gemfile
+          bundle install
+          bundle update
+
+      - name: Build Site
+        run: |
+          bundle exec jekyll build --trace
+        env:
+          JEKYLL_ENV: production
 
       - name: Commit and Push Changes
         run: |
