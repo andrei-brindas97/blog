@@ -1,3 +1,17 @@
+theme: minima
+
+title: DevOps
+description: All day DevOps
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site
+
+# Build settings
+markdown: kramdown
+
+# Directory settings
+layouts_dir: _layouts
+posts_dir: posts
+
 exclude:
   - venv/
   - .venv/
@@ -17,4 +31,9 @@ keep_files:
   - .git
   - .gitignore
 
-safe: true 
+safe: true
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-github-metadata 
