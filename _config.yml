@@ -1,26 +1,30 @@
 remote_theme: mmistakes/minimal-mistakes
 plugins:
   - jekyll-remote-theme
+  - jekyll-include-cache
   - jekyll-feed
-  - jekyll-include-cache    # Required for minimal-mistakes
+  - jekyll-seo-tag
+  - jekyll-github-metadata
+  - jekyll-paginate
+  - jekyll-sitemap
 
 # Theme-specific settings
 minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site settings
-title: "Your Site Title"
-subtitle: "Your Subtitle"
-name: "Your Name"
-description: "Your site description."
-url: # the base hostname & protocol for your site
-baseurl: # the subpath of your site, e.g. "/blog"
+title: "DevOps"
+subtitle: "Subtitle"
+name: "Andrei"
+description: "All day DevOps -> just figuring it out"
+url: # your site's url
+baseurl: # leave empty if not needed
 
 # Author settings
 author:
-  name: "Your Name"
+  name: "Andrei"
   avatar: "/assets/images/bio-photo.jpg"
-  bio: "Your bio"
-  location: "Your Location"
+  bio: "DevOps by day, tech avid by night"
+  location: "Timisoara"
 
 # Site Layout
 defaults:
