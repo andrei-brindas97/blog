@@ -1,46 +1,17 @@
-remote_theme: mmistakes/minimal-mistakes
+theme: jekyll-theme-cayman
+
+title: "Your Site Title"
+description: "Your site description"
+
+# Build settings
+markdown: kramdown
+
 plugins:
-  - jekyll-remote-theme
-  - jekyll-include-cache
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-github-metadata
   - jekyll-paginate
   - jekyll-sitemap
-
-# Theme-specific settings
-minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
-
-# Site settings
-title: "DevOps"
-subtitle: "Subtitle"
-name: "Andrei"
-description: "All day DevOps -> just figuring it out"
-url: # your site's url
-baseurl: # leave empty if not needed
-
-# Author settings
-author:
-  name: "Andrei"
-  avatar: "/assets/images/bio-photo.jpg"
-  bio: "DevOps by day, tech avid by night"
-  location: "Timisoara"
-
-# Site Layout
-defaults:
-  - scope:
-      path: ""
-      type: posts
-    values:
-      layout: single
-      author_profile: true
-      read_time: true
-      comments: true
-      share: true
-      related: true
-
-# Build settings
-markdown: kramdown
 
 # Directory settings
 layouts_dir: _layouts
@@ -65,9 +36,4 @@ keep_files:
   - .git
   - .gitignore
 
-safe: true
-
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-github-metadata 
+safe: true 
