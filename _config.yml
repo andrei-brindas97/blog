@@ -1,1 +1,20 @@
- 
+exclude:
+  - venv/
+  - .venv/
+  - vendor/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - README.md
+  - generate_blog.py
+  - requirements.txt
+  - .git/
+  - .github/
+  - __pycache__/
+  - "*.pyc"
+
+keep_files:
+  - .git
+  - .gitignore
+
+safe: true 
