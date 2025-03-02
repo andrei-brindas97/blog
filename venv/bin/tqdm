@@ -1,4 +1,4 @@
-#!/Users/andrei/Desktop/Blog/venv/bin/python3.12
+#!/home/runner/work/blog/blog/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
